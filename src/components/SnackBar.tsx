@@ -8,16 +8,22 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 const StyledSnackbar = styled(Snackbar)(({ theme }) => ({
-  '& .MuiSnackbarContent-root': {
-    backgroundColor: theme.palette.info.main,
+    position: 'absolute',
+    bottom: '0 !important',
+    left: '0 !important',
+    alignItems: 'start',
+    width: '100%',
+    height: '60px',
+
+  '& .MuiPaper-root': {
     borderRadius: '8px',
     padding: '16px',
-    color: '#fff',
+    color: 'black',
     fontWeight: 'bold',
     boxShadow: theme.shadows[5],
+    backgroundColor: '#fff',
   },
 }));
-
 
 interface CustomSnackbarProps {
   open: boolean;
