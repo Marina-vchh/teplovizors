@@ -95,7 +95,7 @@ export const MapComponent: React.FC<Props> = ({ hasNotification, setHasNotificat
     <MapContainer
       center={startPosition as LatLngTuple}
       zoom={15}
-      style={{ width: '600px', height: '600px', border: '1px solid black', borderRadius: '30px'}}
+      style={{ width: '300px', height: '600px', border: '3px solid black', borderRadius: '30px'}}
       attributionControl={false}
     >
       <TileLayer
@@ -116,7 +116,7 @@ export const MapComponent: React.FC<Props> = ({ hasNotification, setHasNotificat
         <Polygon positions={polygonPositions} color='#F13C59' fillOpacity={0.5} />
       }
 
-      <CustomSnackbar open={hasNotification} message={'Внимание! Лоси! (Возможно олени)'} onClose={handleClose} />
+      <CustomSnackbar open={hasNotification} onClose={handleClose} />
     </MapContainer>
   );
 };
