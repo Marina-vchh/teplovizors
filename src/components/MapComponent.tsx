@@ -6,9 +6,10 @@ import {
   Marker,
   Popup,
   Polyline,
-} from "react-leaflet";
-import L, { LatLngExpression, LatLngTuple } from "leaflet";
-import CustomSnackbar from "./SnackBar";
+  Polygon,
+} from 'react-leaflet';
+import L, { LatLngTuple } from 'leaflet';
+import CustomSnackbar from './SnackBar';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -39,30 +40,24 @@ const yellowTriangleIcon = new L.DivIcon({
   iconAnchor: [29, 25], // Adjust to center the triangle
 });
 
-// Custom icon for the destination (red marker)
-const destinationIcon = new L.Icon({
-  iconUrl:
-    "https://upload.wikimedia.org/wikipedia/commons/4/4f/Map_marker_icon_red.svg", // Replace with a red marker icon
-  iconSize: [25, 41], // Size of the icon
-  iconAnchor: [12, 41], // Point of the icon which will correspond to marker's location
-  popupAnchor: [0, -41], // Point from which the popup should open relative to the iconAnchor
-});
-
 export const MapComponent: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const startPosition = [52.819362, 27.465336];
-  // Destination position
   const destinationPosition = [52.821004, 27.465398];
 
-  // Define a route that moves away from Minsk
+  // Define a route
   const route = [startPosition, destinationPosition];
 
-  const [currentPosition, setCurrentPosition] = useState(route[0]); // Start at the initial position// Destination position
-
-  // Route coordinates (for demonstration purposes, you can modify as needed)
-  const [currentPositionIndex, setCurrentPositionIndex] = useState(0);
-  const [markerPosition, setMarkerPosition] = useState(route[0]);
+  // Coordinates for a highlighted area (arbitrary shape)
+  const polygonPositions: LatLngTuple[] = [
+    [52.8195, 27.4650],
+    [52.8205, 27.4665],
+    [52.8215, 27.4655],
+    [52.8200, 27.4640],
+    [52.8190, 27.4655],
+    [52.8195, 27.4650], // Closing the polygon
+  ];
 
   const handleMarkerClick = () => {
     setOpen(true);
@@ -75,24 +70,11 @@ export const MapComponent: React.FC = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    const simulateBackendResponse = () => {
-      setTimeout(() => {
-        const newMessage = "New data received from the server!";
-        setMessage(newMessage);
-        setOpen(true);
-      }, 5000);
-    };
-
-    simulateBackendResponse();
-    return () => {};
-  }, []);
-
   return (
     <MapContainer
       center={startPosition as LatLngTuple}
-      zoom={13}
-      style={{ width: "600px", height: "600px" }}
+      zoom={15}
+      style={{ width: '600px', height: '600px' }}
       attributionControl={false}
     >
       <TileLayer
@@ -108,21 +90,12 @@ export const MapComponent: React.FC = () => {
           <span>Current Position</span>
         </Popup>
       </Marker>
-      <Marker
-        position={destinationPosition as LatLngTuple}
-        icon={destinationIcon}
-        eventHandlers={{ click: handleMarkerClick }}
-      >
-        <Popup>
-          <span>Destination</span>
-        </Popup>
-      </Marker>
 
-      <Polyline
-        positions={route as LatLngExpression[] | LatLngExpression[][]}
-        color="blue"
-      />
-      <CustomSnackbar open={true} message={message} onClose={handleClose} />
+      {/* Highlighted area (polygon) */}
+      <Polygon positions={polygonPositions} color='#F13C59' fillOpacity={0.5} />
+
+      <Polyline positions={route as any} color='blue' />
+      <CustomSnackbar open={open} message={message} onClose={handleClose} />
     </MapContainer>
   );
 };
