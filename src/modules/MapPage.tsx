@@ -47,7 +47,7 @@ export const MapPage = (props: { disableCustomTheme?: boolean }) => {
   useEffect(() => {
     const now = Date.now();
 
-    if (alert && now - lastAlertTime.current >= 5000) {
+    if (now - lastAlertTime.current >= 5000) {
       handleAudioPlay();
       lastAlertTime.current = now;
       setHasNotification(true);
@@ -68,7 +68,8 @@ export const MapPage = (props: { disableCustomTheme?: boolean }) => {
         console.log("Received message", JSON.parse(e.body));
 
         if (e.body) {
-          setAlert(e.body);
+          console.log(888, e.body)
+          setAlert(JSON.parse(e.body));
         }
       });
     };

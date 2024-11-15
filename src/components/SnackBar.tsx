@@ -46,7 +46,7 @@ const CustomSnackbar: React.FC<CustomSnackbarProps> = ({
   return (
     <StyledSnackbar
       open={open}
-      autoHideDuration={3000}
+      autoHideDuration={5000}
       onClose={() => onClose()}
     >
       <Alert onClose={onClose} sx={{ width: '100%' }}>
