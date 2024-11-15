@@ -25,14 +25,9 @@ export const MapPage = (props: { disableCustomTheme?: boolean }) => {
   const [audio] = useState(alert1);
   const [hasNotification, setHasNotification] = useState(false);
 
-  console.log(444, hasNotification)
-
   const lastAlertTime = useRef(0);
-  useEffect(() => {
-    handleAudioPlay();
-  }, [alert1]);
 
-  const handleAudioPlay = async () => {
+  const handleAudioPlay = () => {
     try {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
@@ -55,7 +50,7 @@ export const MapPage = (props: { disableCustomTheme?: boolean }) => {
     if (alert && now - lastAlertTime.current >= 5000) {
       handleAudioPlay();
       lastAlertTime.current = now;
-      setHasNotification(true)
+      setHasNotification(true);
     }
   }, [alert]);
 
@@ -125,15 +120,23 @@ export const MapPage = (props: { disableCustomTheme?: boolean }) => {
       <Grid
         container
         sx={{
-          height: '100vh',
+          height: "100vh",
           mt: {
             xs: 4,
             sm: 0,
           },
         }}
-        style={{ background: '#071402', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        style={{
+          background: "#071402",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-          <MapComponent hasNotification={hasNotification} setHasNotification={setHasNotification} />
+        <MapComponent
+          hasNotification={hasNotification}
+          setHasNotification={setHasNotification}
+        />
       </Grid>
     </AppTheme>
   );
