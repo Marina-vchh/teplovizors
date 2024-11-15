@@ -1,13 +1,16 @@
 import { alertSound } from "../assets";
-
 export const soundMap = {
   1: alertSound,
 };
-
 export const handleAudioPlay = async (soundAlert: number) => {
   const audio = new Audio(setSoundForAlarm(soundAlert));
 
-  await audio.play();
+  try {
+    console.log("played");
+    await audio.play();
+  } catch (error) {
+    console.log("error");
+  }
 
   return () => {
     audio.pause();
@@ -15,7 +18,7 @@ export const handleAudioPlay = async (soundAlert: number) => {
   };
 };
 
-const setSoundForAlarm = (soundAlert: number) => {
+export const setSoundForAlarm = (soundAlert: number) => {
   const selectedSound = soundMap[soundAlert as keyof typeof soundMap];
   return selectedSound ? selectedSound : undefined;
 };

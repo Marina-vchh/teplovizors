@@ -16,39 +16,70 @@ import AppTheme from "../theme/AppTheme";
 import { MapComponent } from "../components/MapComponent";
 import { useEffect, useRef, useState } from "react";
 import { Client } from "@stomp/stompjs";
-import { handleAudioPlay } from "../utils/playSound";
+import { alertSound } from "../assets";
 
 export const MapPage = (props: { disableCustomTheme?: boolean }) => {
-  const [activeStep, setActiveStep] = React.useState(0);
   // const [text, setText] = React.useState("Вам пришло уведомление");
   const [alert, setAlert] = useState("");
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-  };
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
-  };
+  const alert1 = new Audio(alertSound);
+  const [audio] = useState(alert1);
+
+  const lastAlertTime = useRef(0);
   useEffect(() => {
-    alert && handleAudioPlay(1);
-  }, []);
+    handleAudioPlay();
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, [alert1]);
+
+  const handleAudioPlay = async () => {
+    try {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            console.log("Audio playback started.");
+          })
+          .catch(() => {
+            console.error("Playback failed:");
+          });
+      }
+    } catch (error) {
+      console.error("Error playing audio:", error);
+    }
+  };
+
+  useEffect(() => {
+    const now = Date.now();
+
+    if (alert && now - lastAlertTime.current >= 5000) {
+      handleAudioPlay();
+      lastAlertTime.current = now;
+    }
+  }, [alert]);
 
   useEffect(() => {
     const client = new Client({
-      brokerURL: `ws://10.20.0.76:8080/ws`,
+      brokerURL: "ws://10.20.0.76:8080/ws",
       reconnectDelay: 200,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
     });
 
     client.activate();
-    client.onConnect = function () {
+    client.onConnect = () => {
       client.subscribe("/topic/test", (e) => {
-        console.log("eeeeeeeeee", JSON.parse(e.body));
+        console.log("Received message", JSON.parse(e.body));
 
         if (e.body) {
           setAlert(e.body);
         }
       });
+    };
+
+    return () => {
+      client.deactivate();
     };
   }, []);
 
@@ -94,6 +125,8 @@ export const MapPage = (props: { disableCustomTheme?: boolean }) => {
       <Box sx={{ position: "fixed", top: "1rem", right: "1rem" }}>
         {/* <ColorModeIconDropdown /> */}
       </Box>
+
+      <Button onClick={() => audio?.play()}>qqqqq</Button>
       <Grid
         container
         sx={{
