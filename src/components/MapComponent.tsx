@@ -42,12 +42,11 @@ const yellowTriangleIcon = new L.DivIcon({
 });
 
 type Props = {
-  isVisible: boolean
+  hasNotification: boolean;
+  setHasNotification: any;
 }
 
-export const MapComponent: React.FC<Props> = ({ isVisible }: Props) => {
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
+export const MapComponent: React.FC<Props> = ({ hasNotification, setHasNotification }: Props) => {
   const startPosition = [52.819362, 27.465336];
   const destinationPosition = [52.821004, 27.465398];
 
@@ -82,14 +81,14 @@ export const MapComponent: React.FC<Props> = ({ isVisible }: Props) => {
   }
 
   const handleMarkerClick = () => {
-    setOpen(true);
+    setHasNotification(true);
   };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
-    setOpen(false);
+    setHasNotification(false);
   };
 
   return (
@@ -113,11 +112,11 @@ export const MapComponent: React.FC<Props> = ({ isVisible }: Props) => {
         </Popup>
       </Marker>
 
-      <Box sx={{ opacity: isVisible ? 1 : 0}}>
+      {hasNotification &&
         <Polygon positions={polygonPositions} color='#F13C59' fillOpacity={0.5} />
-      </Box>
+      }
 
-      <CustomSnackbar open={open} message={message} onClose={handleClose} />
+      <CustomSnackbar open={hasNotification} message={'Внимание! Лоси! (Возможно олени)'} onClose={handleClose} />
     </MapContainer>
   );
 };
