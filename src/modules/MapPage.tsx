@@ -122,64 +122,18 @@ export const MapPage = (props: { disableCustomTheme?: boolean }) => {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <Box sx={{ position: "fixed", top: "1rem", right: "1rem" }}>
-        {/* <ColorModeIconDropdown /> */}
-      </Box>
-
-      <Button onClick={() => audio?.play()}>qqqqq</Button>
       <Grid
         container
         sx={{
-          height: {
-            xs: "100%",
-            sm: "calc(100dvh - var(--template-frame-height, 0px))",
-          },
+          height: '100vh',
           mt: {
             xs: 4,
             sm: 0,
           },
         }}
+        style={{ background: '#071402', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <Grid
-          size={{ xs: 6, sm: 3, lg: 1 }}
-          sx={{
-            display: { xs: "none", md: "flex" },
-            flexDirection: "column",
-            backgroundColor: "background.paper",
-            borderRight: { sm: "none", md: "1px solid" },
-            borderColor: { sm: "none", md: "divider" },
-            alignItems: "start",
-            pt: 16,
-            px: 10,
-            gap: 4,
-          }}
-        ></Grid>
-        <Grid
-          size={{ sm: 12, md: 7, lg: 8 }}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: "100%",
-            width: "100%",
-            backgroundColor: { xs: "transparent", sm: "background.default" },
-            alignItems: "start",
-            pt: { xs: 0, sm: 16 },
-            px: { xs: 2, sm: 10 },
-            gap: { xs: 4, md: 8 },
-          }}
-        >
-          <MapComponent />
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: { sm: "space-between", md: "flex-end" },
-              alignItems: "center",
-              width: "100%",
-              maxWidth: { sm: "100%", md: 600 },
-            }}
-          ></Box>
-        </Grid>
+          <MapComponent isVisible={true} />
       </Grid>
     </AppTheme>
   );

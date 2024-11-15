@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import type { ThemeOptions } from '@mui/material/styles';
-// import { inputsCustomizations } from './customizations/inputs';
-// import { dataDisplayCustomizations } from './customizations/dataDisplay';
-// import { feedbackCustomizations } from './customizations/feedback';
-// import { navigationCustomizations } from './customizations/navigation';
-// import { surfacesCustomizations } from './customizations/surfaces';
 import { colorSchemes, shadows, shape, typography } from './themePrimitives';
 
 interface AppThemeProps {
